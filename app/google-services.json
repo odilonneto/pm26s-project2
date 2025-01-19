@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1000142022891",
+    "project_id": "pm26sproject2",
+    "storage_bucket": "pm26sproject2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000142022891:android:3d4bf63fe405acfbc0f6ae",
+        "android_client_info": {
+          "package_name": "com.example.pm26sproject2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACjEgEyZyFR-ppTgngMKkT-O_JK_0y-7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
