@@ -8,7 +8,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -16,12 +20,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var oneTapClient : SignInClient
+    private lateinit var signInRequest : BeginSignInRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         auth = Firebase.auth
+
+        oneTapClient = Identity.getSignInClient( this )
+
+        signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(getString(R.string.your_web_client_id))
+                    .setFilterByAuthorizedAccounts(false)
+                    .build())
+            .build()
 
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -37,6 +54,57 @@ class MainActivity : AppCompatActivity() {
         tvGoToRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        var currencyUser = auth.currentUser
+    }
+
+    fun btRegisterWithGoogleOnClick(view: View) {
+        oneTapClient.beginSignIn( signInRequest )
+            .addOnSuccessListener { result ->
+                startIntentSenderForResult(
+                    result.pendingIntent.intentSender,
+                    2,
+                    null,
+                    0,
+                    0,
+                    0,
+                    null
+                )
+            }
+            .addOnFailureListener( this ) { e->
+                Log.d( "Login", e.localizedMessage )
+            }
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val googleCredential = oneTapClient.getSignInCredentialFromIntent(data)
+        val idToken = googleCredential.googleIdToken
+
+        if ( idToken != null ) {
+            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+            auth.signInWithCredential(firebaseCredential)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        val user = auth.currentUser
+                        println(user?.email)
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        println("erro")
+                    }
+                }
+
         }
     }
 
@@ -62,7 +130,7 @@ class MainActivity : AppCompatActivity() {
             signInWithEmailAndPassword(email, password)
         }
         else {
-            Toast.makeText(this@MainActivity, "Preencha os campos corretamente.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, "Fill in the fields correctly.", Toast.LENGTH_SHORT).show()
         }
     }
 

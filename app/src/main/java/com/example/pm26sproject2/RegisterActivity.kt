@@ -55,12 +55,16 @@ class RegisterActivity : AppCompatActivity() {
         if(email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
             if(password == confirmPassword){
                 createUserWithEmailAndPassword(email, password)
+                Toast.makeText(this@RegisterActivity, "Account created successfully.", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
             } else {
-                Toast.makeText(this@RegisterActivity, "Senhas incompativeis..", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegisterActivity, "Incompatible passwords.", Toast.LENGTH_SHORT).show()
             }
         }
         else {
-            Toast.makeText(this@RegisterActivity, "Preencha os campos corretamente.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@RegisterActivity, "Fill in the fields correctly.", Toast.LENGTH_SHORT).show()
         }
     }
 

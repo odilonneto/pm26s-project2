@@ -2,23 +2,20 @@ package com.example.pm26sproject2
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
-class HomeActivity : AppCompatActivity() {
+class IntroActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_intro)
 
-        val btnLogout: Button = findViewById(R.id.btnLogout)
-        btnLogout.setOnClickListener {
-            Firebase.auth.signOut()
+        Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }
+        }, 3000)
     }
 }

@@ -1,46 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:background="@drawable/background">
 
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="E-mail"
+        android:layout_height="50dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/white"
+        android:ems="10"
+        android:hint="Email"
         android:inputType="textEmailAddress"
-        android:padding="12dp"
-        android:layout_marginBottom="8dp" />
+        android:paddingStart="16dp"
+        android:textColor="#3678FB"
+        android:textColorHint="#3678FB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/passwordEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Senha"
+        android:layout_height="50dp"
+        android:background="@drawable/white"
+        android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp" />
+        android:paddingStart="16dp"
+        android:textColor="#3678FB"
+        android:textColorHint="#3678FB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <Button
         android:id="@+id/btLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Entrar"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#0022FF"
         android:onClick="btLoginOnClick"
-        android:layout_marginBottom="8dp" />
+        android:text="Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btRegisterWithGoogle"
+        android:onClick="btRegisterWithGoogleOnClick"
+        android:background="@drawable/white"
+        android:layout_height="47dp"
+        android:layout_marginStart="87dp"
+        android:layout_marginEnd="87dp"
+        android:layout_marginBottom="38dp"
+        android:backgroundTint="#0022FF"
+        android:drawableStart="@drawable/common_google_signin_btn_icon_dark"
+        android:padding="8dp"
+        android:text="Login with Google"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="200dp" />
 
     <TextView
         android:id="@+id/tvGoToRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Não tem uma conta? Cadastre-se"
-        android:textColor="@color/purple_700"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:text="Don't have an account? Sign up"
+        android:textColor="#FFFFFF"
         android:textSize="14sp"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btLogin" />
 
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="264dp"
+        android:layout_height="280dp"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="87dp"
+        android:layout_marginEnd="74dp"
+        android:layout_marginBottom="61dp"
+        app:layout_constraintBottom_toTopOf="@+id/emailEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/logo2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
