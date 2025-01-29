@@ -32,6 +32,11 @@ class HomeActivity : AppCompatActivity() {
             finish()
         }
 
+        val btnProfile: Button = findViewById(R.id.btnProfile)
+        btnProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
     private fun toggleMenu(menu: View) {
         if (isMenuVisible) {
