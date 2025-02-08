@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")
+    id("com.google.gms.google-services") // Plugin do Google Services
 }
 
 android {
@@ -27,29 +27,40 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation ("com.google.firebase:firebase-auth-ktx")
-    implementation ("com.google.android.gms:play-services-auth:20.5.0")
+    // Firebase libraries via BOM
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+
+    // Firebase Auth (KTX version, already managed by BOM)
+    implementation("com.google.firebase:firebase-auth-ktx")
+    // Firebase Firestore (KTX version, already managed by BOM)
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    // Firebase Database (KTX version, already managed by BOM)
+    implementation("com.google.firebase:firebase-database-ktx")
+
+    // Play Services Auth
+    implementation("com.google.android.gms:play-services-auth:20.5.0")
+
+    // AndroidX Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation (platform("com.google.firebase:firebase-bom:32.2.2"))
-    implementation ("com.google.firebase:firebase-auth")
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.database.ktx)
+
+    // Test Libraries
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
 }

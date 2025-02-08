@@ -37,7 +37,14 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
+
+        val btnStartActivity: Button = findViewById(R.id.btnStartActivity)
+        btnStartActivity.setOnClickListener {
+            val intent = Intent(this, MonitorActivity::class.java)
+            startActivity(intent)
+        }
     }
+
     private fun toggleMenu(menu: View) {
         if (isMenuVisible) {
             menu.animate()
