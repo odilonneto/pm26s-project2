@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +29,7 @@
                 android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:src="@drawable/steps"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="2dp"
                 app:tint="#FFFFFF" />
 
             <TextView
@@ -57,8 +58,7 @@
                 android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:src="@drawable/calorias"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginStart="10dp"
                 app:tint="#FFFFFF" />
 
             <TextView
@@ -142,6 +142,13 @@
                 android:foregroundTint="#FFFFFF"
                 android:text="--:--"
                 android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/durationIcon"
@@ -149,7 +156,6 @@
                 android:layout_height="18dp"
                 android:layout_alignParentStart="true"
                 android:src="@drawable/duration"
-                android:layout_marginStart="20dp"
                 android:layout_marginEnd="4dp"
                 app:tint="#FFFFFF" />
 
