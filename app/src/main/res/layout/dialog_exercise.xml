@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:padding="10dp"
+    android:elevation="4dp"
+    app:cardBackgroundColor="#F6212121"
+    app:cardCornerRadius="8dp"
+    tools:context=".HomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/stepsIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/steps"
+                android:layout_marginEnd="5dp"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvTitleSteps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:text="Passos: "
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSteps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/caloriasIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/calorias"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="4dp"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvTitleCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:textSize="18sp"
+                android:text="Calorias: "
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:textSize="18sp"
+                android:text="0"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/startTimeIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/start_end_time"
+                android:layout_marginEnd="4dp"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvTitleStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:text="Início: "
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:text="--:--"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/endTimeIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/start_end_time"
+                android:layout_marginEnd="4dp"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvTitleEndTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:text="Fim: "
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvEndTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:text="--:--"
+                android:textColor="#FFFFFF" />
+
+            <ImageView
+                android:id="@+id/durationIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/duration"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="4dp"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvTitleDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:text="Duração: "
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FFFFFF"
+                android:text="--:--"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

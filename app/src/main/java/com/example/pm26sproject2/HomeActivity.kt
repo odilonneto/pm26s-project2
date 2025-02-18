@@ -1,21 +1,36 @@
 package com.example.pm26sproject2
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pm26sproject2.entity.Exercise
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class HomeActivity : AppCompatActivity() {
+
+    private val db = FirebaseFirestore.getInstance()
 
     private var isMenuVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        InitListExercises()
 
         val btnMenu: Button = findViewById(R.id.btnMenu)
         val sideMenu: LinearLayout = findViewById(R.id.sideMenu)
@@ -62,5 +77,53 @@ class HomeActivity : AppCompatActivity() {
                 .start()
         }
         isMenuVisible = !isMenuVisible
+    }
+
+    private fun InitListExercises() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        userId?.let {
+            db.collection("Activities")
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    if (!querySnapshot.isEmpty) {
+                        val exercises: MutableList<Exercise> = mutableListOf()
+
+                        for (document in querySnapshot) {
+                            val startTime = document.getLong("startTime") ?: 0
+                            val endTime = document.getLong("endTime") ?: 0
+                            val duration = document.getLong("duration") ?: 0
+                            val steps = document.getLong("steps") ?: 0
+                            val calories = document.getDouble("calories") ?: 0
+
+                            val exercise = Exercise(
+                                userId.toString(),
+                                calories.toDouble(),
+                                duration.toLong(),
+                                startTime.toLong(),
+                                endTime.toLong(),
+                                steps.toInt()
+                            )
+
+                            exercises.add(exercise)
+                        }
+
+                        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+                        recyclerView.layoutManager = GridLayoutManager(this, 1)
+                        recyclerView.adapter = ExerciseAdapter(exercises, {})
+                    } else {
+                        Log.d("Firebase", "Nenhuma atividade encontrada para este usuário.")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firebase", "Erro ao recuperar atividades", e)
+                }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        InitListExercises()
     }
 }
