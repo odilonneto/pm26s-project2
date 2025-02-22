@@ -1,4 +1,4 @@
-package com.example.pm26sproject2
+package com.example.pm26sproject2.Adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pm26sproject2.R
 import com.example.pm26sproject2.entity.Exercise
 import java.text.SimpleDateFormat
 import java.util.Date

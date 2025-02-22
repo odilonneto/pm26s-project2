@@ -1,24 +1,20 @@
 package com.example.pm26sproject2
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pm26sproject2.Adapter.ExerciseAdapter
 import com.example.pm26sproject2.entity.Exercise
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class HomeActivity : AppCompatActivity() {
 
@@ -56,6 +52,12 @@ class HomeActivity : AppCompatActivity() {
         val btnStartActivity: Button = findViewById(R.id.btnStartActivity)
         btnStartActivity.setOnClickListener {
             val intent = Intent(this, MonitorActivity::class.java)
+            startActivity(intent)
+        }
+
+        val btnGroups: Button = findViewById(R.id.btnGroups)
+        btnGroups.setOnClickListener {
+            val intent = Intent(this, RegisterGroupActivity::class.java)
             startActivity(intent)
         }
     }

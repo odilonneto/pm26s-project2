@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.Pm26sproject2" parent="Base.Theme.Pm26sproject2" />
+    <style name="Theme.Pm26sproject2.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.Pm26sproject2.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Pm26sproject2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
