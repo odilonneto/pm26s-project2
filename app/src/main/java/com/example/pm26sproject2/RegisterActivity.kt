@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -25,6 +26,8 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var nameEditText: EditText
     private lateinit var birthdateEditText: EditText
     private val calendar = Calendar.getInstance()
+
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,14 +71,16 @@ class RegisterActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 val user = auth.currentUser
                 if (user != null) {
-                    val database = FirebaseDatabase.getInstance().getReference("Users").child(user.uid)
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-                    val userData = mapOf(
+                    val userDataMap = mapOf(
                         "name" to name,
                         "birthdate" to birthdate
                     )
 
-                    database.setValue(userData)
+                    db.collection("User")
+                        .document(userId.toString())
+                        .set(userDataMap)
                         .addOnSuccessListener {
                             Toast.makeText(this, "Registration completed successfully!", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this, HomeActivity::class.java))
