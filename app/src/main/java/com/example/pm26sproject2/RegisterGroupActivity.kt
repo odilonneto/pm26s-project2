@@ -28,28 +28,42 @@ class RegisterGroupActivity : AppCompatActivity() {
     }
 
     fun btRegisterGroupOnClick(view: View) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        val name = nameEditText.text
-        val description = descriptionEditText.text
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val name = nameEditText.text.toString().trim()
+        val description = descriptionEditText.text.toString().trim()
 
+        val groupRef = db.collection("Groups").document() // Gerando ID automático
+        val groupId = groupRef.id
 
+        val groupDataMap = mapOf(
+            "groupId" to groupId,
+            "groupCreatorId" to userId,
+            "groupName" to name,
+            "groupDescription" to description
+        )
 
+        groupRef.set(groupDataMap)
+            .addOnSuccessListener {
+                Log.d("Firebase", "Grupo salvo com sucesso!")
 
-            val groupDataMap = mapOf(
-                "groupCreatorId" to userId,
-                "groupName" to name,
-                "groupDescription" to description
-            )
+                // Adiciona associação do usuário ao grupo na collection "UserGroups"
+                val userGroupMap = mapOf(
+                    "userId" to userId,
+                    "groupId" to groupId
+                )
 
-            db.collection("Groups")
-                .document(userId + "_" + System.currentTimeMillis()) // como se fosse o "id"
-                .set(groupDataMap)
-                .addOnSuccessListener {
-                    Log.d("Firebase", "Grupo salvo com sucesso!")
-                }
-                .addOnFailureListener { e ->
-                    Log.e("Firebase", "Erro ao salvar o grupo", e)
-                }
-
+                db.collection("UserGroups")
+                    .add(userGroupMap)
+                    .addOnSuccessListener {
+                        Log.d("Firebase", "Associação usuário-grupo criada com sucesso!")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("Firebase", "Erro ao associar usuário ao grupo", e)
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firebase", "Erro ao salvar o grupo", e)
+            }
     }
+
 }
