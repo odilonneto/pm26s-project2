@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterGroupActivity : AppCompatActivity() {
-    private lateinit var btRegisterGroup: Button
     private lateinit var nameEditText: TextView
     private lateinit var descriptionEditText: TextView
 
@@ -35,9 +34,8 @@ class RegisterGroupActivity : AppCompatActivity() {
 
 
 
-        // so se tiver o usuario
-        userId?.let {
-            val activityDataMap = mapOf(
+
+            val groupDataMap = mapOf(
                 "groupCreatorId" to userId,
                 "groupName" to name,
                 "groupDescription" to description
@@ -45,13 +43,13 @@ class RegisterGroupActivity : AppCompatActivity() {
 
             db.collection("Groups")
                 .document(userId + "_" + System.currentTimeMillis()) // como se fosse o "id"
-                .set(activityDataMap)
+                .set(groupDataMap)
                 .addOnSuccessListener {
-                    Log.d("Firebase", "Atividade salva com sucesso!")
+                    Log.d("Firebase", "Grupo salvo com sucesso!")
                 }
                 .addOnFailureListener { e ->
-                    Log.e("Firebase", "Erro ao salvar a atividade", e)
+                    Log.e("Firebase", "Erro ao salvar o grupo", e)
                 }
-        }
+
     }
 }

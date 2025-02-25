@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
 
         val btnGroups: Button = findViewById(R.id.btnGroups)
         btnGroups.setOnClickListener {
-            val intent = Intent(this, RegisterGroupActivity::class.java)
+            val intent = Intent(this, GroupsActivity::class.java)
             startActivity(intent)
         }
     }

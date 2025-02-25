@@ -43,17 +43,17 @@ android {
 
 dependencies {
     // Firebase libraries via BOM
-    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation(platform(libs.firebase.bom))
 
     // Firebase Auth (KTX version, already managed by BOM)
-    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation(libs.google.firebase.auth.ktx)
     // Firebase Firestore (KTX version, already managed by BOM)
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation(libs.firebase.firestore.ktx)
     // Firebase Database (KTX version, already managed by BOM)
-    implementation("com.google.firebase:firebase-database-ktx")
+    implementation(libs.google.firebase.database.ktx)
 
     // Play Services Auth
-    implementation("com.google.android.gms:play-services-auth:20.5.0")
+    implementation(libs.play.services.auth)
 
     // AndroidX Libraries
     implementation(libs.androidx.core.ktx)
