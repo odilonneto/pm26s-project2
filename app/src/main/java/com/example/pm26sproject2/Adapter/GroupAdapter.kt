@@ -78,6 +78,17 @@ class GroupAdapter(
                 .addOnFailureListener { e ->
                     Log.e("Firebase", "Erro ao excluir o grupo", e)
                 }
+
+            db.collection("UserGroups")
+                .document(groupId)
+                .delete()
+                .addOnSuccessListener {
+                    Log.d("Firebase", "Relação usuário grupo excluído com sucesso!")
+
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firebase", "Erro ao excluir relação usuario grupo", e)
+                }
         }
     }
 
