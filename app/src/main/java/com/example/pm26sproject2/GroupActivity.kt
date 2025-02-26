@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,7 +61,7 @@ class GroupActivity : AppCompatActivity() {
 
     private fun addUserToGroup(email: String) {
         // Buscar usuário pelo email
-        db.collection("Users")
+        db.collection("User")
             .whereEqualTo("email", email)
             .get()
             .addOnSuccessListener { documents ->
@@ -70,17 +71,20 @@ class GroupActivity : AppCompatActivity() {
 
                     // Adicionar o usuário ao grupo
                     groupId?.let { groupId ->
-                        db.collection("UserGroup")
+                        db.collection("UserGroups")
                             .add(mapOf("groupId" to groupId, "userId" to userId))
                             .addOnSuccessListener {
+                                Toast.makeText(this@GroupActivity, "Usuário adicionado com sucesso", Toast.LENGTH_SHORT).show()
                                 Log.d("Firestore", "Usuário adicionado ao grupo!")
                                 fetchGroupUsers(groupId) // Atualiza a lista
                             }
                             .addOnFailureListener { e ->
+                                Toast.makeText(this@GroupActivity, "Erro ao adicionar usuário", Toast.LENGTH_SHORT).show()
                                 Log.e("Firestore", "Erro ao adicionar usuário", e)
                             }
                     }
                 } else {
+                    Toast.makeText(this@GroupActivity, "Usuário não encontrado", Toast.LENGTH_SHORT).show()
                     Log.e("Firestore", "Usuário não encontrado")
                 }
             }

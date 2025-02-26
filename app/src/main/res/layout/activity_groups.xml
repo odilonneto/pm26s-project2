@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".GroupsActivity">
 
     <android.widget.ScrollView
@@ -36,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="Cadastrar Novo Grupo"
         android:backgroundTint="#0022FF"
+        android:textColor="#FFFFFF"
         android:gravity="bottom"
         android:onClick="btNovoGrupoOnClick"
         tools:ignore="MissingConstraints" />

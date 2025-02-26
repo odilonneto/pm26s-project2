@@ -37,40 +37,59 @@ class GroupsActivity : AppCompatActivity() {
     private fun InitListGroups() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-        userId?.let {
-            db.collection("Groups")
-                //.whereEqualTo("userId", userId)
+        if (!userId.isNullOrEmpty()) {
+            val db = FirebaseFirestore.getInstance()
+
+            // Primeiro, buscar os groupId do usuário na coleção UserGroups
+            db.collection("UserGroups")
+                .whereEqualTo("userId", userId)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     if (!querySnapshot.isEmpty) {
-                        val groups: MutableList<Group> = mutableListOf()
+                        val groupIds = querySnapshot.documents.mapNotNull { it.getString("groupId") }
 
-                        for (document in querySnapshot) {
-                            val groupId = document.getString("groupId")
-                            val groupName = document.getString("groupName")
-                            val groupDescription = document.getString("groupDescription")
-                            val groupCreatorId = document.getString("groupCreatorId")
+                        if (groupIds.isNotEmpty()) {
+                            db.collection("Groups")
+                                .whereIn("groupId", groupIds)
+                                .get()
+                                .addOnSuccessListener { groupSnapshot ->
+                                    if (!groupSnapshot.isEmpty) {
+                                        val groups = mutableListOf<Group>()
 
-                            val group = Group(
-                                groupId.toString(),
-                                groupName.toString(),
-                                groupDescription.toString(),
-                                groupCreatorId.toString()
-                            )
+                                        for (document in groupSnapshot) {
+                                            val group = Group(
+                                                document.getString("groupId") ?: "",
+                                                document.getString("groupName") ?: "",
+                                                document.getString("groupDescription") ?: "",
+                                                document.getString("groupCreatorId") ?: ""
+                                            )
+                                            groups.add(group)
+                                        }
 
-                            groups.add(group)
+                                        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+                                        recyclerView.layoutManager = GridLayoutManager(this, 1)
+                                        recyclerView.adapter = GroupAdapter(groups, {}, ::InitListGroups)
+                                    } else {
+                                        Log.d("Firebase", "Nenhum grupo encontrado para este usuário.")
+                                    }
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("Firebase", "Erro ao recuperar grupos", e)
+                                }
                         }
-
-                        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-                        recyclerView.layoutManager = GridLayoutManager(this, 1)
-                        recyclerView.adapter = GroupAdapter(groups, {})
                     } else {
-                        Log.d("Firebase", "Nenhuma atividade encontrada para este usuário.")
+                        Log.d("Firebase", "Nenhuma associação de grupo encontrada para este usuário.")
                     }
                 }
                 .addOnFailureListener { e ->
-                    Log.e("Firebase", "Erro ao recuperar atividades", e)
+                    Log.e("Firebase", "Erro ao recuperar UserGroups", e)
                 }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        InitListGroups()
+    }
+
 }

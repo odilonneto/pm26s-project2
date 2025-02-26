@@ -118,7 +118,7 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this@RegisterActivity, "Preencha o campo senha com pelo menos 6 digitos", Toast.LENGTH_SHORT).show()
         } else if (confirmPassword.isEmpty()) {
             Toast.makeText(this@RegisterActivity, "Preencha o campo senha", Toast.LENGTH_SHORT).show()
-        } else if (password == confirmPassword) {
+        } else if (password != confirmPassword) {
             Toast.makeText(this@RegisterActivity, "As senhas não combinam", Toast.LENGTH_SHORT).show()
         } else {
             createUserWithEmailAndPassword(email, password, name, birthdate)

@@ -19,7 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupAdapter(
     private val groups: List<Group>,
-    private val onItemClick: (Group) -> Unit
+    private val onItemClick: (Group) -> Unit,
+    private val onGroupDeleted: () -> Unit
 ) : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
     inner class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,8 +28,7 @@ class GroupAdapter(
             val name = group.groupName
             val description = group.groupDescription
             val groupId = group.groupId
-            val creatorId =
-                group.groupCreatorId // Certifique-se de que o modelo Group tem esse campo
+            val creatorId = group.groupCreatorId
 
             val tvName = itemView.findViewById<TextView>(R.id.tvName)
             val tvDescription = itemView.findViewById<TextView>(R.id.tvDescription)
@@ -72,6 +72,8 @@ class GroupAdapter(
                 .delete()
                 .addOnSuccessListener {
                     Log.d("Firebase", "Grupo excluído com sucesso!")
+
+                    onGroupDeleted()
                 }
                 .addOnFailureListener { e ->
                     Log.e("Firebase", "Erro ao excluir o grupo", e)
@@ -81,7 +83,7 @@ class GroupAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.dialog_exercise, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.dialog_group, parent, false)
         return GroupViewHolder(view)
     }
 
