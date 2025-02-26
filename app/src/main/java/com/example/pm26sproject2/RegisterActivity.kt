@@ -74,8 +74,10 @@ class RegisterActivity : AppCompatActivity() {
                     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
                     val userDataMap = mapOf(
+                        "id" to userId,
                         "name" to name,
-                        "birthdate" to birthdate
+                        "birthdate" to birthdate,
+                        "email" to email
                     )
 
                     db.collection("User")
@@ -104,18 +106,30 @@ class RegisterActivity : AppCompatActivity() {
         val name = nameEditText.text.toString().trim()
         val birthdate = birthdateEditText.text.toString().trim()
 
-        if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && name.isNotEmpty() && birthdate.isNotEmpty()) {
-            if (password == confirmPassword) {
-                createUserWithEmailAndPassword(email, password, name, birthdate)
-                Toast.makeText(this@RegisterActivity, "Account created successfully.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this@RegisterActivity, "Incompatible passwords.", Toast.LENGTH_SHORT).show()
-            }
+        if (name.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo nome", Toast.LENGTH_SHORT).show()
+        } else if (birthdate.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo data de aniversário", Toast.LENGTH_SHORT).show()
+        } else if (email.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo email", Toast.LENGTH_SHORT).show()
+        } else if (password.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo senha", Toast.LENGTH_SHORT).show()
+        } else if (password.length < 6) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo senha com pelo menos 6 digitos", Toast.LENGTH_SHORT).show()
+        } else if (confirmPassword.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo senha", Toast.LENGTH_SHORT).show()
+        } else if (password == confirmPassword) {
+            Toast.makeText(this@RegisterActivity, "As senhas não combinam", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this@RegisterActivity, "Fill in the fields correctly.", Toast.LENGTH_SHORT).show()
+            createUserWithEmailAndPassword(email, password, name, birthdate)
+            Toast.makeText(
+                this@RegisterActivity,
+                "Account created successfully.",
+                Toast.LENGTH_SHORT
+            ).show()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

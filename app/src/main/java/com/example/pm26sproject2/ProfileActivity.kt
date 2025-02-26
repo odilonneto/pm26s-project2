@@ -2,6 +2,7 @@ package com.example.pm26sproject2
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -12,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -30,6 +32,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var newPasswordEditText: EditText
     private lateinit var oldPasswordEditText: EditText
     private val calendar = Calendar.getInstance()
+
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,19 +72,24 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun loadUserData() {
-        emailTextView.text = user.email
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-        database.get().addOnSuccessListener { snapshot ->
-            if (snapshot.exists()) {
-                val name = snapshot.child("name").getValue(String::class.java)
-                val birthdate = snapshot.child("birthdate").getValue(String::class.java)
-
-                nameEditText.setText(name ?: "")
-                birthdateEditText.setText(birthdate ?: "")
+        db.collection("User")
+            .whereEqualTo("id", userId)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    for (document in querySnapshot) {
+                        nameEditText.setText( document.getString("name") )
+                        birthdateEditText.setText( document.getString("birthdate")  )
+                    }
+                }
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Error loading profile data.", Toast.LENGTH_SHORT).show()
-        }
+            .addOnFailureListener { e ->
+                Log.e("Firebase", "Erro ao recuperar usuario", e)
+            }
+
+        emailTextView.text = user.email
     }
 
 
@@ -103,18 +112,28 @@ class ProfileActivity : AppCompatActivity() {
         val name = nameEditText.text.toString()
         val birthdate = birthdateEditText.text.toString()
 
-        val userData = mapOf(
-            "name" to name,
-            "birthdate" to birthdate
-        )
+        if (name.isEmpty()) {
+            Toast.makeText(this@ProfileActivity, "Preencha o campo nome", Toast.LENGTH_SHORT).show()
+        } else if (birthdate.isEmpty()) {
+            Toast.makeText(this@ProfileActivity, "Preencha o campo data de aniversário", Toast.LENGTH_SHORT).show()
+        } else {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-        database.setValue(userData)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Data saved successfully!", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Error saving data.", Toast.LENGTH_SHORT).show()
-            }
+            val updatedDataMap = mapOf(
+                "name" to name,
+                "birthdate" to birthdate
+            )
+
+            db.collection("User")
+                .document(userId.toString())
+                .update(updatedDataMap)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Data updated successfully!", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Error updating data.", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun changePassword() {
