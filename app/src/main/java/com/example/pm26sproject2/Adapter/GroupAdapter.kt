@@ -2,7 +2,9 @@ package com.example.pm26sproject2.Adapter
 
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pm26sproject2.GroupActivity
 import com.example.pm26sproject2.R
 import com.example.pm26sproject2.entity.Group
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class GroupAdapter(
     private val groups: List<Group>,
@@ -22,17 +26,56 @@ class GroupAdapter(
         fun bind(group: Group) {
             val name = group.groupName
             val description = group.groupDescription
-            val groupId = group.groupId // Certifique-se de que o modelo Group tem esse campo
+            val groupId = group.groupId
+            val creatorId =
+                group.groupCreatorId // Certifique-se de que o modelo Group tem esse campo
 
-            itemView.findViewById<TextView>(R.id.tvName).text = name
-            itemView.findViewById<TextView>(R.id.tvDescription).text = description
+            val tvName = itemView.findViewById<TextView>(R.id.tvName)
+            val tvDescription = itemView.findViewById<TextView>(R.id.tvDescription)
+            val btnViewGroup = itemView.findViewById<Button>(R.id.btViewGroup)
+            val btnDeleteGroup = itemView.findViewById<Button>(R.id.btnDeleteGroup)
 
-            itemView.findViewById<Button>(R.id.btAcessarGrupo).setOnClickListener {
+            tvName.text = name
+            tvDescription.text = description
+
+            // Obtém o ID do usuário logado
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+            // Exibe ou esconde o botão de excluir
+            if (userId == creatorId) {
+                btnDeleteGroup.visibility = View.VISIBLE
+            } else {
+                btnDeleteGroup.visibility = View.GONE
+            }
+
+            btnViewGroup.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, GroupActivity::class.java)
                 intent.putExtra("GROUP_ID", groupId)
                 context.startActivity(intent)
             }
+
+            btnDeleteGroup.setOnClickListener {
+                AlertDialog.Builder(itemView.context)
+                    .setTitle("Excluir Grupo")
+                    .setMessage("Tem certeza que deseja excluir este grupo?")
+                    .setPositiveButton("Sim") { _, _ ->
+                        deleteGroup(groupId)
+                    }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
+            }
+        }
+        private fun deleteGroup(groupId: String) {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("Groups").document(groupId)
+                .delete()
+                .addOnSuccessListener {
+                    Log.d("Firebase", "Grupo excluído com sucesso!")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firebase", "Erro ao excluir o grupo", e)
+                }
         }
     }
 
