@@ -5,8 +5,10 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.widget.Button
+import android.widget.Chronometer
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +23,8 @@ class MonitorActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var activityStatus: TextView
     private lateinit var stepsCount: TextView
     private lateinit var caloriesBurned: TextView
+    private lateinit var chronometer: Chronometer
+
 
     private var sensorManager: SensorManager? = null
     private var accelerometer: Sensor? = null
@@ -53,6 +57,8 @@ class MonitorActivity : AppCompatActivity(), SensorEventListener {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
+        chronometer = findViewById(R.id.chronometer)
+
         startButton.setOnClickListener {
             startMonitoring()
         }
@@ -69,6 +75,10 @@ class MonitorActivity : AppCompatActivity(), SensorEventListener {
 
         startTime = System.currentTimeMillis();
 
+        // Configurar e iniciar o Chronometer
+        chronometer.base = SystemClock.elapsedRealtime()
+        chronometer.start()
+
         // registrar o listener do acelerômetro
         accelerometer?.let {
             sensorManager?.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
@@ -82,6 +92,9 @@ class MonitorActivity : AppCompatActivity(), SensorEventListener {
 
         // parar de ouvir o sensor
         sensorManager?.unregisterListener(this)
+
+        // Parar o cronômetro
+        chronometer.stop()
 
         // salvar os dados no Firebase
         saveActivityDataToFirebase()
