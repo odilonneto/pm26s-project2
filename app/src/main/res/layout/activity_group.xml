@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="83dp"
         android:backgroundTint="#0022FF"
-        android:text="Adicionar usuário"
+        android:text="Add User"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,12 +22,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewGroupUsers"
-        android:layout_width="398dp"
-        android:layout_height="206dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="330dp"
+        android:layout_width="352dp"
+        android:layout_height="534dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="14dp"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnAddUser"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="6dp" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="29dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

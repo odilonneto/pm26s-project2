@@ -17,15 +17,16 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="10dp"
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
-                android:layout_marginEnd="9dp"
+
+                android:layout_width="367dp"
+                android:layout_height="560dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginBottom="14dp" />
 
         </LinearLayout>
@@ -35,7 +36,7 @@
         android:id="@+id/btNovoGrupo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cadastrar Novo Grupo"
+        android:text="Register New Group"
         android:backgroundTint="#0022FF"
         android:textColor="#FFFFFF"
         android:gravity="bottom"

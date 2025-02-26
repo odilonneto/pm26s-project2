@@ -22,7 +22,7 @@
             android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Usuário: Nome"
+            android:text="User: Name"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -46,7 +46,7 @@
                 android:id="@+id/tvTitleTotalSteps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Passos Totais: "
+                android:text="Total Steps: "
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -79,7 +79,7 @@
                 android:id="@+id/tvTitleTotalCalories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Calorias Totais: "
+                android:text="Total Calories: "
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
@@ -110,7 +110,7 @@
                 android:id="@+id/tvTitleTotalDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Duração Total: "
+                android:text="Total Time: "
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 

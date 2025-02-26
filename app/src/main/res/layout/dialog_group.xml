@@ -7,6 +7,7 @@
     android:layout_margin="8dp"
     android:elevation="4dp"
     android:padding="10dp"
+    android:layout_marginEnd="20sp"
     app:cardBackgroundColor="#F6212121"
     app:cardCornerRadius="8dp"
     tools:context=".GroupsActivity">
@@ -87,7 +88,7 @@
             android:layout_gravity="center_horizontal"
             android:backgroundTint="#0022FF"
             android:layout_marginTop="25dp"
-            android:text="Ver Grupo"
+            android:text="View Group"
             app:icon="@drawable/eye"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Excluir Grupo"
+            android:text="Delete Group"
             android:visibility="visible"
             android:backgroundTint="#f50f39"
           />

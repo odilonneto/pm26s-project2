@@ -29,10 +29,12 @@ class UserTotalExerciseAdapter(
             tvUserName.text = "User: ${user.userName}"
             tvTotalCalories.text = "Calories: ${user.calories}"
             tvTotalSteps.text = "Steps: ${user.steps}"
-            tvTotalDuration.text = "Duration: ${user.duration} min"
-            itemView.setOnClickListener {
-                onItemClick(user)
-            }
+
+            val hours = user.duration / 3600000
+            val minutes = (user.duration % 3600000) / 60000
+            val seconds = (user.duration % 60000) / 1000
+            tvTotalDuration.text = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
         }
     }
 

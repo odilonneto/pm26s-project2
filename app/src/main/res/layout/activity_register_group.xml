@@ -43,7 +43,7 @@
         android:hint="Group Description"
         android:textColor="#3678FB"
         android:textColorHint="#3678FB"
-        android:padding="12dp"
+        android:padding="1dp"
         android:inputType="textMultiLine"
         android:minLines="3"
         app:layout_constraintStart_toStartOf="parent"
