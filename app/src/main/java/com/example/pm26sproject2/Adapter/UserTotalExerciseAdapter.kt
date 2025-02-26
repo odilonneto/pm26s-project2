@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pm26sproject2.R
 import com.example.pm26sproject2.entity.UserExerciseTotal
+import org.w3c.dom.Text
 
 class UserTotalExerciseAdapter(
     private val users: List<UserExerciseTotal>,
@@ -15,6 +16,7 @@ class UserTotalExerciseAdapter(
 
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: UserExerciseTotal) {
+            itemView.findViewById<TextView>(R.id.tvUserName).text = "User: ${user.userId}"
             itemView.findViewById<TextView>(R.id.tvTotalCalories).text = "Calories: ${user.calories}"
             itemView.findViewById<TextView>(R.id.tvTotalSteps).text = "Steps: ${user.steps}"
             itemView.findViewById<TextView>(R.id.tvTotalDuration).text = "Duration: ${user.duration} min"
