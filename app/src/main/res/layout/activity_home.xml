@@ -57,6 +57,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="#0022FF"
+        android:textColor="#FFFFFF"
         android:text="Menu"
         app:icon="@android:drawable/ic_menu_sort_by_size"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:backgroundTint="#0022FF"
+        android:textColor="#FFFFFF"
         android:text="Start Activity"
         app:icon="@android:drawable/ic_media_play"
         app:iconTint="#98A5FE"
@@ -93,18 +95,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:backgroundTint="#0022FF"
+            android:textColor="#FFFFFF"
             android:text="Profile"
             app:icon="@drawable/icon_profile2"
-            app:iconTint="#98A5FE" />
-
-        <Button
-            android:id="@+id/btnStatistics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#0022FF"
-            android:text="Statistics"
-            app:icon="@drawable/estatisticas"
             app:iconTint="#98A5FE" />
 
         <Button
@@ -113,24 +106,17 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:backgroundTint="#0022FF"
+            android:textColor="#FFFFFF"
             android:text="Groups"
             app:icon="@drawable/group"
             app:iconTint="#98A5FE" />
-
-        <Button
-            android:id="@+id/btnSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#0022FF"
-            android:text="Settings"
-            app:icon="@android:drawable/ic_menu_preferences" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#0022FF"
+            android:textColor="#FFFFFF"
             android:text="Logout"
             app:icon="@android:drawable/ic_menu_revert" />
 

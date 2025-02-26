@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.Scopes
+import com.google.android.gms.common.api.Scope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -96,6 +99,8 @@ class MainActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
+                        val name = user?.displayName
+
                         println(user?.email)
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)

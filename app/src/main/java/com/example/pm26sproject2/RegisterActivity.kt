@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -25,6 +26,8 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var nameEditText: EditText
     private lateinit var birthdateEditText: EditText
     private val calendar = Calendar.getInstance()
+
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,14 +71,18 @@ class RegisterActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 val user = auth.currentUser
                 if (user != null) {
-                    val database = FirebaseDatabase.getInstance().getReference("Users").child(user.uid)
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-                    val userData = mapOf(
+                    val userDataMap = mapOf(
+                        "id" to userId,
                         "name" to name,
-                        "birthdate" to birthdate
+                        "birthdate" to birthdate,
+                        "email" to email
                     )
 
-                    database.setValue(userData)
+                    db.collection("User")
+                        .document(userId.toString())
+                        .set(userDataMap)
                         .addOnSuccessListener {
                             Toast.makeText(this, "Registration completed successfully!", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this, HomeActivity::class.java))
@@ -99,18 +106,30 @@ class RegisterActivity : AppCompatActivity() {
         val name = nameEditText.text.toString().trim()
         val birthdate = birthdateEditText.text.toString().trim()
 
-        if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && name.isNotEmpty() && birthdate.isNotEmpty()) {
-            if (password == confirmPassword) {
-                createUserWithEmailAndPassword(email, password, name, birthdate)
-                Toast.makeText(this@RegisterActivity, "Account created successfully.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this@RegisterActivity, "Incompatible passwords.", Toast.LENGTH_SHORT).show()
-            }
+        if (name.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo nome", Toast.LENGTH_SHORT).show()
+        } else if (birthdate.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo data de aniversário", Toast.LENGTH_SHORT).show()
+        } else if (email.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo email", Toast.LENGTH_SHORT).show()
+        } else if (password.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo senha", Toast.LENGTH_SHORT).show()
+        } else if (password.length < 6) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo senha com pelo menos 6 digitos", Toast.LENGTH_SHORT).show()
+        } else if (confirmPassword.isEmpty()) {
+            Toast.makeText(this@RegisterActivity, "Preencha o campo senha", Toast.LENGTH_SHORT).show()
+        } else if (password == confirmPassword) {
+            Toast.makeText(this@RegisterActivity, "As senhas não combinam", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this@RegisterActivity, "Fill in the fields correctly.", Toast.LENGTH_SHORT).show()
+            createUserWithEmailAndPassword(email, password, name, birthdate)
+            Toast.makeText(
+                this@RegisterActivity,
+                "Account created successfully.",
+                Toast.LENGTH_SHORT
+            ).show()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
