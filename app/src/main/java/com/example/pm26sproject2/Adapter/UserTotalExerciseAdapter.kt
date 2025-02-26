@@ -1,5 +1,6 @@
 package com.example.pm26sproject2.Adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +16,20 @@ class UserTotalExerciseAdapter(
 ) : RecyclerView.Adapter<UserTotalExerciseAdapter.UserViewHolder>() {
 
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(user: UserExerciseTotal) {
-            itemView.findViewById<TextView>(R.id.tvUserName).text = "User: ${user.userId}"
-            itemView.findViewById<TextView>(R.id.tvTotalCalories).text = "Calories: ${user.calories}"
-            itemView.findViewById<TextView>(R.id.tvTotalSteps).text = "Steps: ${user.steps}"
-            itemView.findViewById<TextView>(R.id.tvTotalDuration).text = "Duration: ${user.duration} min"
+        val tvUserName: TextView = itemView.findViewById(R.id.tvUserName)
+        val tvTotalCalories: TextView = itemView.findViewById(R.id.tvTotalCalories)
+        val tvTotalSteps: TextView = itemView.findViewById(R.id.tvTotalSteps)
+        val tvTotalDuration: TextView = itemView.findViewById(R.id.tvTotalDuration)
 
+        fun bind(user: UserExerciseTotal) {
+
+            Log.d("UserViewHolder", "User: ${user.userId}")
+            Log.d("UserViewHolder", "TextViews Initialized: ${tvUserName != null && tvTotalCalories != null && tvTotalSteps != null && tvTotalDuration != null}")
+
+            tvUserName.text = "User: ${user.userName}"
+            tvTotalCalories.text = "Calories: ${user.calories}"
+            tvTotalSteps.text = "Steps: ${user.steps}"
+            tvTotalDuration.text = "Duration: ${user.duration} min"
             itemView.setOnClickListener {
                 onItemClick(user)
             }
@@ -28,7 +37,8 @@ class UserTotalExerciseAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.dialog_exercise, parent, false)
+        // aqui garantimos que o layout correto seja inflado
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.exercise_total_user_dialog, parent, false)
         return UserViewHolder(view)
     }
 
@@ -38,3 +48,4 @@ class UserTotalExerciseAdapter(
 
     override fun getItemCount(): Int = users.size
 }
+

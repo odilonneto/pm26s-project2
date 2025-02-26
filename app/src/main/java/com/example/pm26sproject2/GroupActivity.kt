@@ -94,7 +94,7 @@ class GroupActivity : AppCompatActivity() {
     }
 
     private fun fetchGroupUsers(groupId: String) {
-        db.collection("UserGroup")
+        db.collection("UserGroups")
             .whereEqualTo("groupId", groupId)
             .get()
             .addOnSuccessListener { documents ->
@@ -115,39 +115,113 @@ class GroupActivity : AppCompatActivity() {
             return
         }
 
-        val userTotalsMap = mutableMapOf<String, UserExerciseTotal>()
-        val activitiesRef = db.collection("Activities")
+        val usersRef = db.collection("User").whereIn("id", userIds).get()
 
-        activitiesRef
-            .whereIn("userId", userIds)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val userId = document.getString("userId") ?: continue
-                    val calories = document.getDouble("calories")?.toInt() ?: 0
-                    val steps = document.getLong("steps")?.toInt() ?: 0
-                    val duration = document.getLong("duration")?.toInt() ?: 0
+// Criar um mapa para armazenar os nomes dos usuários (id -> userName)
+        val userNameMap = mutableMapOf<String, String>()
 
-                    // Se o usuário já está no mapa, soma os valores
-                    val existingTotal = userTotalsMap[userId] ?: UserExerciseTotal(userId, 0.0, 0, 0)
-                    userTotalsMap[userId] = existingTotal.copy(
-                        calories = existingTotal.calories + calories,
-                        steps = existingTotal.steps + steps,
-                        duration = existingTotal.duration + duration
-                    )
-                }
-
-                // Converte o mapa para a lista e ordena pelos maiores totais de calorias
-                userList.addAll(userTotalsMap.values.sortedByDescending { it.calories })
-
-                adapter = UserTotalExerciseAdapter(userList) { selectedUser ->
-                    Log.d("Ranking", "User: ${selectedUser.userId}, Calorias: ${selectedUser.calories}")
-                }
-                recyclerView.adapter = adapter
+// Primeiro, obtenha os dados dos usuários e mapeie o id para o nome
+        usersRef.addOnSuccessListener { userDocuments ->
+            for (document in userDocuments) {
+                val userId = document.getString("id") ?: continue
+                val userName = document.getString("name") ?: "Unknown"
+                userNameMap[userId] = userName
             }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Erro ao buscar atividades dos usuários", e)
-            }
+
+            // Agora que temos o mapa userNameMap, carregue as atividades
+            val activitiesRef = db.collection("Activities")
+
+            activitiesRef
+                .whereIn("userId", userIds)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val userTotalsMap = mutableMapOf<String, UserExerciseTotal>()
+
+                    for (document in documents) {
+                        val userId = document.getString("userId") ?: continue
+                        val calories = document.getDouble("calories")?.toInt() ?: 0
+                        val steps = document.getLong("steps")?.toInt() ?: 0
+                        val duration = document.getLong("duration")?.toInt() ?: 0
+
+                        // Obtenha o nome do usuário a partir do mapa
+                        val userName = userNameMap[userId] ?: "Unknown"
+
+                        // Se o usuário já está no mapa, soma os valores
+                        val existingTotal = userTotalsMap[userId] ?: UserExerciseTotal(userId, userName, 0.0, 0, 0)
+                        userTotalsMap[userId] = existingTotal.copy(
+                            userName = userName,
+                            calories = existingTotal.calories + calories,
+                            steps = existingTotal.steps + steps,
+                            duration = existingTotal.duration + duration
+                        )
+                    }
+
+                    try {
+                        Log.d("Debug", "Ordenando lista...")
+                        userList.addAll(userTotalsMap.values.sortedByDescending { it.calories })
+
+                        Log.d("Debug", "Criando adapter...")
+                        adapter = UserTotalExerciseAdapter(userList) { selectedUser ->
+                            Log.d("Ranking", "User: ${selectedUser.userId}, Calorias: ${selectedUser.calories}")
+                        }
+
+                        Log.d("Debug", "Definindo adapter no RecyclerView...")
+                        recyclerView.adapter = adapter
+
+                        Log.d("Debug", "Adapter definido com sucesso!")
+                    } catch (e: Exception) {
+                        Log.e("RankingError", "Erro ao processar lista de usuários", e)
+                    }
+                }.addOnFailureListener { e ->
+                    Log.e("Firestore", "Erro ao buscar atividades dos usuários", e)
+                }
+        }
+
+//        val usersRef = db.collection("User").whereIn("id", userIds).get();
+//
+//        val userTotalsMap = mutableMapOf<String, UserExerciseTotal>()
+//        val activitiesRef = db.collection("Activities")
+//
+//        activitiesRef
+//            .whereIn("userId", userIds)
+//            .get()
+//            .addOnSuccessListener { documents ->
+//                for (document in documents) {
+//                    val userId = document.getString("userId") ?: continue
+//                    val calories = document.getDouble("calories")?.toInt() ?: 0
+//                    val steps = document.getLong("steps")?.toInt() ?: 0
+//                    val duration = document.getLong("duration")?.toInt() ?: 0
+//
+//                    // Se o usuário já está no mapa, soma os valores
+//                    val existingTotal = userTotalsMap[userId] ?: UserExerciseTotal(userId, "userName", 0.0, 0, 0)
+//                    userTotalsMap[userId] = existingTotal.copy(
+//                        userName = "userName",
+//                        calories = existingTotal.calories + calories,
+//                        steps = existingTotal.steps + steps,
+//                        duration = existingTotal.duration + duration
+//                    )
+//                }
+//
+//                try {
+//                    Log.d("Debug", "Ordenando lista...")
+//                    userList.addAll(userTotalsMap.values.sortedByDescending { it.calories })
+//
+//                    Log.d("Debug", "Criando adapter...")
+//                    adapter = UserTotalExerciseAdapter(userList) { selectedUser ->
+//                        Log.d("Ranking", "User: ${selectedUser.userId}, Calorias: ${selectedUser.calories}")
+//                    }
+//
+//                    Log.d("Debug", "Definindo adapter no RecyclerView...")
+//                    recyclerView.adapter = adapter
+//
+//                    Log.d("Debug", "Adapter definido com sucesso!")
+//                } catch (e: Exception) {
+//                    Log.e("RankingError", "Erro ao processar lista de usuários", e)
+//                }
+//            }
+//            .addOnFailureListener { e ->
+//                Log.e("Firestore", "Erro ao buscar atividades dos usuários", e)
+//            }
     }
 
 }
